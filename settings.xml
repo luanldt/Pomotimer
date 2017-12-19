@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><settings name="pomotimer" version="1.1.0">
+  <basic>
+    <longbreak>
+      <time>30</time>
+      <color>luan</color>
+    </longbreak>
+    <shortbreak>
+      <time>5</time>
+      <color>0000FF</color>
+    </shortbreak>
+    <stack>
+      <time>25</time>
+      <color>FF0000</color>
+    </stack>
+  </basic>
+</settings>

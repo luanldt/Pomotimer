@@ -5,8 +5,8 @@
  */
 package com.luandeptrai.main;
 
-import com.luandeptrai.controller.ProgressModel;
 import com.luandeptrai.controller.Settings;
+import java.util.Timer;
 import javax.swing.UIManager;
 
 /**
@@ -16,6 +16,7 @@ import javax.swing.UIManager;
 public class MainFrame extends javax.swing.JFrame {
 
   public static final Settings SETTINGS = new Settings();
+  private Timer t = new Timer(true);
   
   /**
    * Creates new form MainFrame
@@ -37,12 +38,13 @@ public class MainFrame extends javax.swing.JFrame {
     progressBarDuration = new javax.swing.JProgressBar();
     btnStart = new javax.swing.JButton();
     btnStop = new javax.swing.JButton();
-    btnShortBreak = new javax.swing.JButton();
-    btnLongBreak = new javax.swing.JButton();
     lblTime = new javax.swing.JLabel();
 
     setAlwaysOnTop(true);
     setLocation(new java.awt.Point(0, 0));
+    setLocationByPlatform(true);
+    setResizable(false);
+    setType(java.awt.Window.Type.UTILITY);
 
     progressBarDuration.setForeground(java.awt.Color.green);
 
@@ -63,22 +65,8 @@ public class MainFrame extends javax.swing.JFrame {
       }
     });
 
-    btnShortBreak.setText("Short Break");
-    btnShortBreak.setName("btnShortBreak"); // NOI18N
-    btnShortBreak.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        btnShortBreakActionPerformed(evt);
-      }
-    });
-
-    btnLongBreak.setText("Long Break");
-    btnLongBreak.setName("btnLongBreak"); // NOI18N
-    btnLongBreak.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        btnLongBreakActionPerformed(evt);
-      }
-    });
-
+    lblTime.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
+    lblTime.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
     lblTime.setText("00 : 00");
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -87,62 +75,37 @@ public class MainFrame extends javax.swing.JFrame {
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(layout.createSequentialGroup()
         .addContainerGap()
-        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-          .addComponent(lblTime)
-          .addGroup(layout.createSequentialGroup()
+        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addComponent(progressBarDuration, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
             .addComponent(btnStart)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(btnStop)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(btnShortBreak)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(btnLongBreak))
-          .addComponent(progressBarDuration, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGap(0, 0, Short.MAX_VALUE))
+          .addComponent(lblTime, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        .addContainerGap())
     );
     layout.setVerticalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-        .addComponent(lblTime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        .addComponent(lblTime, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(progressBarDuration, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(btnStart)
-          .addComponent(btnStop)
-          .addComponent(btnShortBreak)
-          .addComponent(btnLongBreak))
-        .addContainerGap())
+          .addComponent(btnStop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
 
     pack();
   }// </editor-fold>//GEN-END:initComponents
 
   private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
-    String timeValue = SETTINGS.readProperty("settings.basic.stack.time");
-    ProgressModel.start(progressBarDuration, Integer.parseInt(timeValue), btnStart, lblTime);
-    this.btnStart.setEnabled(false);
-    this.btnStop.setEnabled(true);
   }//GEN-LAST:event_btnStartActionPerformed
 
   private void btnStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStopActionPerformed
-    ProgressModel.stop();
-    this.btnStop.setEnabled(false); 
   }//GEN-LAST:event_btnStopActionPerformed
-
-  private void btnShortBreakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShortBreakActionPerformed
-    String timeValue = SETTINGS.readProperty("settings.basic.shortbreak.time");
-    ProgressModel.start(progressBarDuration, Integer.parseInt(timeValue), btnStart, lblTime);
-    this.btnStart.setEnabled(false);
-    this.btnStop.setEnabled(true);
-  }//GEN-LAST:event_btnShortBreakActionPerformed
-
-  private void btnLongBreakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLongBreakActionPerformed
-    String timeValue = SETTINGS.readProperty("settings.basic.longbreak.time");
-    ProgressModel.start(progressBarDuration, Integer.parseInt(timeValue), btnStart, lblTime);
-    this.btnStart.setEnabled(false);
-    this.btnStop.setEnabled(true);
-  }//GEN-LAST:event_btnLongBreakActionPerformed
 
   /**
    * @param args the command line arguments
@@ -185,8 +148,6 @@ public class MainFrame extends javax.swing.JFrame {
   }
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
-  private javax.swing.JButton btnLongBreak;
-  private javax.swing.JButton btnShortBreak;
   private javax.swing.JButton btnStart;
   private javax.swing.JButton btnStop;
   private javax.swing.JLabel lblTime;
