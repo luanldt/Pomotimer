@@ -5,7 +5,9 @@
  */
 package com.luandeptrai.main;
 
+import com.luandeptrai.controller.ProgressTimer;
 import com.luandeptrai.controller.Settings;
+import com.luandeptrai.controller.TimerJob;
 import java.util.Timer;
 import javax.swing.UIManager;
 
@@ -16,7 +18,7 @@ import javax.swing.UIManager;
 public class MainFrame extends javax.swing.JFrame {
 
   public static final Settings SETTINGS = new Settings();
-  private Timer t = new Timer(true);
+  private final ProgressTimer progressTimer = new ProgressTimer();
   
   /**
    * Creates new form MainFrame
@@ -102,9 +104,26 @@ public class MainFrame extends javax.swing.JFrame {
   }// </editor-fold>//GEN-END:initComponents
 
   private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
+    String time = SETTINGS.readProperty("settings.basic.shortbreak.time");
+    int iTime = Integer.parseInt(time);
+    progressBarDuration.setMaximum(iTime * 60);
+    progressBarDuration.setMinimum(0);  
+    progressTimer.registerControl(progressBarDuration, lblTime, btnStart, btnStop);
+    progressTimer.start(iTime);
+    this.btnStart.setEnabled(false);
+    this.btnStop.setEnabled(true);
+    TimerJob.CURRENT_MINUTE = iTime;
+    TimerJob.CURRENT_SECONDS = 0;
   }//GEN-LAST:event_btnStartActionPerformed
 
   private void btnStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStopActionPerformed
+    progressTimer.stop();
+    this.btnStop.setEnabled(false);
+    this.btnStart.setEnabled(true);
+    this.progressBarDuration.setValue(0);
+    TimerJob.iCOUNT = 0;
+    TimerJob.CURRENT_MINUTE = 0;
+    TimerJob.CURRENT_SECONDS = 0;
   }//GEN-LAST:event_btnStopActionPerformed
 
   /**
